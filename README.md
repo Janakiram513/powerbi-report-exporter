@@ -85,6 +85,7 @@ Output: `Documents\PowerBI_Export\<Report name>_<Label>\<Report name>_<Label>.pb
 
 > Run the script as a **file**. Pasting it line by line into the console breaks the
 > `if / else` blocks.
+![Example run](export_success_redacted.png)
 
 ## Troubleshooting
 
