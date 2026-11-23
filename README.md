@@ -16,12 +16,57 @@ This script pulls the deployed definition (pages, visuals, bookmarks, filters) s
 from any workspace you have write access to and saves it as a `.pbip` you can open in
 Power BI Desktop, diff, or commit.
 
-## Requirements
+## Prerequisites
 
-- Windows PowerShell 5.1 or PowerShell 7+
-- **Contributor, Member or Admin** role on the workspace (the API requires write permission on the report)
-- Fabric REST APIs allowed for users in your tenant
-- Either the `Az.Accounts` module (installed automatically for the current user) or a browser session on app.powerbi.com
+Check these before running the script. The workspace role is the one people most often miss.
+
+### 1. Workspace role on the workspace that holds the report
+
+The API requires **read and write** permission on the report, so you need one of these roles on that workspace:
+
+| Workspace role | Can export? |
+|---|---|
+| Admin | ✅ Yes |
+| Member | ✅ Yes |
+| Contributor | ✅ Yes |
+| Viewer | ❌ No (returns 403 Forbidden) |
+| Report shared with you directly / via an app, no workspace role | ❌ No |
+| Build permission on the semantic model only | ❌ No |
+
+Check your role: open the workspace in app.powerbi.com → **Manage access**.
+
+> If the report is live-connected to a semantic model in a different workspace, you only
+> need the role on the **report's** workspace, not the model's.
+
+### 2. Licence
+
+- A Power BI licence that lets you access the workspace: **Pro** or **Premium Per User**,
+  or a free licence if the workspace is on Premium / Fabric capacity.
+
+### 3. Organisation (tenant) settings
+
+- Your organisation must allow access to the Power BI / Fabric REST APIs. If every call
+  returns 403 even though you are Admin/Member/Contributor, ask your Power BI / Fabric
+  administrator.
+- If the report carries a sensitivity label with **encryption**, you need rights to remove
+  that label (configured in Microsoft Purview).
+
+### 4. Your machine
+
+- **Windows PowerShell 5.1** (built into Windows 10/11) or **PowerShell 7+**.
+- **Sign-in method**, either:
+  - the `Az.Accounts` PowerShell module. The script installs it for your user only
+    (no admin rights needed), but it needs internet access to the PowerShell Gallery;
+    **or**
+  - a browser session on app.powerbi.com, using `-UseBrowserToken` (no module needed).
+- **Power BI Desktop**, a recent version, to open the exported `.pbip`. On older versions,
+  enable *File → Options → Preview features → Power BI Project (.pbip) save option* and
+  the *enhanced report format (PBIR)* option.
+
+### 5. What you need to know about the report
+
+- The **workspace ID** and **report ID**, from the report URL:
+  `https://app.powerbi.com/groups/<WorkspaceId>/reports/<ReportId>/...`
 
 ## Usage
 

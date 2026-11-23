@@ -29,6 +29,19 @@
 .PARAMETER UseBrowserToken
     Use an access token copied from the Power BI web page instead of signing in with Az.Accounts.
 
+.NOTES
+    PREREQUISITES
+    - Workspace role on the REPORT's workspace: Admin, Member or Contributor.
+      Viewer, direct/app sharing, or Build permission only -> 403 Forbidden.
+    - Power BI licence giving access to the workspace (Pro / PPU, or free on Premium/Fabric capacity).
+    - Organisation allows Power BI / Fabric REST API access.
+    - Encrypted sensitivity label: you need rights to remove the label.
+    - Windows PowerShell 5.1 or PowerShell 7+.
+    - Sign-in: Az.Accounts module (auto-installed for current user, needs PowerShell Gallery access)
+      or -UseBrowserToken with an app.powerbi.com browser session.
+    - A recent Power BI Desktop to open the exported .pbip.
+    Run as a file (powershell -ExecutionPolicy Bypass -File ...), not by pasting into the console.
+
 .EXAMPLE
     .\Export-PbiReport.ps1 -WorkspaceId "<workspace-guid>" -ReportId "<report-guid>" -Label PROD
 
